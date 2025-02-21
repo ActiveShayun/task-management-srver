@@ -6,7 +6,9 @@ const port = process.env.PORT || 5000
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 
-app.use(cors())
+app.use(cors([
+
+]))
 app.use(express.json())
 
 
@@ -94,6 +96,31 @@ async function run() {
                 }
             }
             const result = await taskCollection.updateOne(query, updateDoc);
+            res.send(result)
+        })
+
+        app.put('/editTask/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const task = req.body
+            console.log(task);
+            const updateDoc = {
+                $set: {
+                    email: task.email,
+                    taskTitle: task.taskTitle,
+                    tasDescription: task.tasDescription,
+                    taskCategory: task.taskCategory,
+                    createdAt: new Date().toISOString()
+                }
+            }
+            const result = await taskCollection.updateOne(query, updateDoc);
+            res.send(result)
+        })
+
+        app.get('/singleTask/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await taskCollection.findOne(query)
             res.send(result)
         })
         // Send a ping to confirm a successful connection
