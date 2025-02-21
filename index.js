@@ -7,7 +7,12 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 
 app.use(cors([
-
+    {
+        origin: [
+            'https://taskauth-93fc6.web.app/',
+        ],
+        credentials: true
+    }
 ]))
 app.use(express.json())
 
